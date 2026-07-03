@@ -1,0 +1,1313 @@
+:root {
+  --primary: #0066cc;
+  --primary-focus: #0071e3;
+  --ink: #1d1d1f;
+  --muted: #7a7a7a;
+  --canvas: #ffffff;
+  --parchment: #f5f5f7;
+  --pearl: #fafafc;
+  --hairline: #e0e0e0;
+  --cyan: #24c8db;
+  --silver: #d8dde6;
+  --shadow: 0 24px 80px rgba(29, 29, 31, 0.08);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei UI", sans-serif;
+  color: var(--ink);
+  background: var(--parchment);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.app-header {
+  background: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%);
+  padding: 18px 32px 56px;
+}
+
+nav {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 1440px;
+}
+
+.brand-mark {
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.12px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #333;
+  font-size: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.nav-links button {
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: #333;
+  cursor: pointer;
+  font: inherit;
+  padding: 8px 12px;
+}
+
+.nav-links button.active,
+.nav-links button:hover {
+  background: #111;
+  color: #fff;
+}
+
+.hero {
+  align-items: end;
+  display: grid;
+  gap: 32px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  margin: 80px auto 0;
+  max-width: 1440px;
+}
+
+.hero h1 {
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.04;
+  margin: 0;
+}
+
+.hero p {
+  color: #333;
+  font-size: 17px;
+  line-height: 1.47;
+  margin: 24px 0 0;
+  max-width: 760px;
+}
+
+.hero-metrics {
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 24px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 18px;
+  backdrop-filter: blur(20px) saturate(180%);
+}
+
+.hero-metrics div {
+  background: #fff;
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.hero-metrics span,
+.summary-card span,
+.panel-title span {
+  color: var(--muted);
+  display: block;
+  font-size: 12px;
+  letter-spacing: -0.08px;
+}
+
+.hero-metrics strong {
+  display: block;
+  font-size: 22px;
+  margin-top: 8px;
+}
+
+.metric-input-label {
+  display: block;
+}
+
+.metric-input-row {
+  align-items: baseline;
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.metric-input-row input {
+  appearance: textfield;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  color: var(--ink);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.2;
+  min-width: 0;
+  outline: none;
+  padding: 0;
+  width: 64px;
+}
+
+.metric-input-row input::-webkit-inner-spin-button,
+.metric-input-row input::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+.metric-input-row input:focus {
+  border-bottom-color: var(--primary-focus);
+}
+
+.metric-input-row strong {
+  display: inline;
+  margin-top: 0;
+}
+
+.workspace {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 320px minmax(0, 1fr);
+  margin: -24px auto 0;
+  max-width: 1440px;
+  padding: 0 32px 64px;
+}
+
+.workspace-wide {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.input-panel {
+  align-self: start;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  padding: 24px;
+  position: sticky;
+  top: 24px;
+}
+
+.panel-title {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.panel-title strong {
+  background: var(--ink);
+  border-radius: 999px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 400;
+  padding: 8px 12px;
+}
+
+.field {
+  display: block;
+  margin-top: 18px;
+}
+
+.field span {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.field input,
+.field select {
+  background: #fff;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  color: var(--ink);
+  font-size: 17px;
+  height: 44px;
+  outline: none;
+  padding: 0 18px;
+  width: 100%;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: var(--primary-focus);
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.16);
+}
+
+.field small {
+  color: var(--muted);
+  display: block;
+  font-size: 12px;
+  line-height: 1.4;
+  margin-top: 7px;
+}
+
+.content {
+  display: grid;
+  gap: 24px;
+}
+
+.warning-stack {
+  background: #fff8e6;
+  border: 1px solid #ffe0a3;
+  border-radius: 18px;
+  color: #6b4700;
+  padding: 14px 18px;
+}
+
+.warning-stack p {
+  margin: 0;
+}
+
+.summary-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.summary-card,
+.result-section,
+.topology-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 24px;
+}
+
+.summary-card {
+  min-height: 150px;
+  padding: 22px;
+}
+
+.summary-card strong {
+  display: block;
+  font-size: 34px;
+  letter-spacing: -0.02em;
+  margin-top: 14px;
+}
+
+.summary-card p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+  margin: 12px 0 0;
+}
+
+.tabs {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 999px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+}
+
+.tabs button {
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: #333;
+  cursor: pointer;
+  flex: 1;
+  min-height: 44px;
+  padding: 10px 16px;
+}
+
+.tabs button.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+.tabs button:active {
+  transform: scale(0.98);
+}
+
+.result-section {
+  overflow: hidden;
+  padding: 24px;
+}
+
+.section-heading {
+  align-items: start;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 18px;
+}
+
+.section-heading h2,
+.section-heading h3 {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  margin: 0;
+}
+
+.section-heading p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 8px 0 0;
+}
+
+.section-heading > span {
+  background: var(--pearl);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  color: #333;
+  flex: 0 0 auto;
+  font-size: 14px;
+  padding: 8px 14px;
+}
+
+.table-wrap {
+  overflow: auto;
+}
+
+.bom-table {
+  border-collapse: collapse;
+  min-width: 1220px;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.col-sequence {
+  width: 56px;
+}
+
+.col-product {
+  width: 210px;
+}
+
+.col-model {
+  width: 190px;
+}
+
+.col-description {
+  width: 430px;
+}
+
+.col-formula {
+  width: 260px;
+}
+
+.col-quantity {
+  width: 72px;
+}
+
+.bom-table-compact {
+  min-width: 1160px;
+}
+
+.bom-table-compact .col-product {
+  width: 176px;
+}
+
+.bom-table-compact .col-model {
+  width: 176px;
+}
+
+.bom-table-compact .col-description {
+  width: 332px;
+}
+
+.bom-table-compact .col-formula {
+  width: 330px;
+}
+
+th {
+  background: var(--parchment);
+  color: #333;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 12px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+td {
+  border-bottom: 1px solid #eeeeef;
+  color: #333;
+  font-size: 13px;
+  line-height: 1.45;
+  padding: 14px 12px;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.strong-cell {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.quantity-cell {
+  color: var(--primary);
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.description-cell {
+  color: #3f3f46;
+}
+
+.formula-cell {
+  color: #5f6368;
+  font-size: 12px;
+}
+
+.topology-stack {
+  display: grid;
+  gap: 20px;
+}
+
+.topology-card {
+  padding: 24px;
+}
+
+.topology-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 4px;
+  color: var(--ink);
+}
+
+.topology-card .topology-sub {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0 0 14px;
+  line-height: 1.5;
+}
+
+.topology-scroll {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 80vh;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ffffff, #fafafc);
+  border: 1px solid #eeeeef;
+}
+
+.topology-svg {
+  display: block;
+  height: auto;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.topology-svg.overview {
+  min-width: 0;
+}
+
+/* ---------- Topology SVG: zone boxes ---------- */
+.zone {
+  fill: #ffffff;
+  stroke: #9aa3b1;
+  stroke-width: 1.4;
+  stroke-dasharray: 6 4;
+}
+
+.zone-warning {
+  fill: #fff7e6;
+  stroke: #d97706;
+  stroke-width: 1.4;
+  stroke-dasharray: 6 4;
+}
+
+.zone-security {
+  fill: #fff5f5;
+  stroke: #f04d4d;
+  stroke-width: 1.2;
+  stroke-dasharray: 6 4;
+}
+
+.zone-oob {
+  fill: #fff0f0;
+  stroke: #f04d4d;
+  stroke-width: 1.2;
+  stroke-dasharray: 6 4;
+}
+
+.zone-storage {
+  fill: #f0fbff;
+  stroke: #00a7e1;
+  stroke-width: 1.2;
+  stroke-dasharray: 6 4;
+}
+
+.zone-inband {
+  fill: #f5faf0;
+  stroke: #5b8f33;
+  stroke-width: 1.2;
+  stroke-dasharray: 6 4;
+}
+
+.zone-compute {
+  fill: #fafdf2;
+  stroke: #4d7f2c;
+  stroke-width: 1.2;
+}
+
+.zone-dashed {
+  stroke-dasharray: 6 4;
+}
+
+.zone-heading {
+  font-size: 18px;
+  font-weight: 600;
+  fill: var(--ink);
+}
+
+/* compute topology zone headings - white on colored bg */
+.zone-heading-white {
+  font-size: 18px;
+  font-weight: 600;
+  fill: #ffffff;
+}
+
+.zone-sub {
+  font-size: 12px;
+  fill: var(--muted);
+}
+
+.zone-sub-white {
+  font-size: 14px;
+  fill: rgba(255,255,255,0.85);
+}
+
+/* ---------- Topology SVG: side labels ---------- */
+.side-label {
+  font-size: 18px;
+  font-weight: 700;
+  fill: #ff7a1a;
+}
+
+.side-label.computing {
+  fill: #ff7a1a;
+}
+
+/* ---------- Topology SVG: P1/P2 plane boxes ---------- */
+.plane-p1 {
+  fill: #b8b8b8;
+  stroke: #888;
+  stroke-width: 1;
+  rx: 2;
+}
+
+.plane-p2 {
+  fill: #ff7a1a;
+  stroke: #cc5e00;
+  stroke-width: 1;
+  rx: 2;
+}
+
+.plane-dashed {
+  fill: none;
+  stroke: #6c6f78;
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+  rx: 3;
+}
+
+.plane-text {
+  fill: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+/* ---------- Topology SVG: leaf boxes ---------- */
+.leaf-p1 {
+  fill: #ff3838;
+  stroke: #cc0000;
+  stroke-width: 1;
+  rx: 2;
+}
+
+.leaf-p2 {
+  fill: #f5cf00;
+  stroke: #c2a300;
+  stroke-width: 1;
+  rx: 2;
+}
+
+.leaf-text {
+  fill: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.storage-switch-core {
+  fill: #0891b2;
+  stroke: #155e75;
+  stroke-width: 1;
+  rx: 3;
+}
+
+.storage-switch-access {
+  fill: #0d9488;
+  stroke: #115e59;
+  stroke-width: 1;
+  rx: 3;
+}
+
+.storage-lane-frame,
+.storage-server-frame {
+  fill: #fbfff7;
+  stroke: #7aa05b;
+  stroke-width: 1.1;
+  stroke-dasharray: 6 4;
+}
+
+.storage-server-frame {
+  fill: rgba(251, 255, 247, 0.62);
+}
+
+.storage-lane-accent {
+  stroke: #0891b2;
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: 0.75;
+}
+
+.storage-lane-title {
+  fill: var(--ink);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.storage-lane-meta {
+  fill: #5f6368;
+  font-size: 13px;
+}
+
+.compute-leaf-text {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* ---------- Topology SVG: industrial device port indicators ---------- */
+.port-dot {
+  fill: #1a1d22;
+  stroke: none;
+}
+
+.port-row {
+  fill: #444;
+  stroke: none;
+}
+
+/* spine/leaf faceplate (lighter strip on device block) */
+.device-faceplate {
+  fill: rgba(255,255,255,0.18);
+}
+
+/* zone colored accent bar (left edge strip) */
+.zone-accent {
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.accent-spine {
+  stroke: #4d7f2c;
+}
+
+.accent-leaf {
+  stroke: #2463eb;
+}
+
+.accent-pod {
+  stroke: #7c2dd6;
+}
+
+/* zone header band (colored strip behind heading) */
+.zone-header-band {
+  rx: 0;
+}
+
+/* spine/leaf industrial label */
+.device-name {
+  fill: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.device-name-sm {
+  fill: #ffffff;
+  font-size: 10px;
+  font-weight: 600;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+/* ---------- Topology SVG: POD labels ---------- */
+.pod-label {
+  font-size: 20px;
+  font-weight: 700;
+  fill: var(--ink);
+}
+
+.pod-frame {
+  fill: rgba(245, 247, 250, 0.5);
+  stroke: #6c6f78;
+  stroke-width: 1.2;
+  stroke-dasharray: 5 3;
+}
+
+.pod-group:hover .pod-frame {
+  stroke: #2563eb;
+}
+
+/* ---------- Topology SVG: server ---------- */
+.server-base {
+  fill: #8a8d96;
+  stroke: #6c6f78;
+  stroke-width: 1;
+}
+
+.server-label {
+  fill: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.nic-text {
+  fill: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+/* ---------- Topology SVG: switch icons ---------- */
+.switch-icon {
+  stroke-width: 1;
+}
+
+.switch-blue {
+  fill: #d6e8ff;
+  stroke: #2563eb;
+}
+
+.switch-cyan {
+  fill: #d6f4f8;
+  stroke: #06b6d4;
+}
+
+.switch-silver {
+  fill: #e8ebf0;
+  stroke: #9aa3b1;
+}
+
+.switch-green {
+  fill: #d8e8c4;
+  stroke: #5b8f33;
+}
+
+.switch-orange {
+  fill: #ffe0c2;
+  stroke: #d97706;
+}
+
+.switch-inner {
+  fill: #ffffff;
+  stroke: #cbd3df;
+  stroke-width: 1;
+}
+
+.switch-cross {
+  stroke: #6c6f78;
+  stroke-width: 1.2;
+  fill: none;
+}
+
+.switch-dot {
+  fill: #ff3838;
+  stroke: none;
+}
+
+.device-label {
+  font-size: 11px;
+  font-weight: 500;
+  fill: var(--ink);
+}
+
+.device-sublabel {
+  font-size: 14px;
+  fill: var(--muted);
+}
+
+/* ---------- Topology SVG: server group ---------- */
+.server-group {
+  fill: #ffffff;
+  stroke: #cbd3df;
+  stroke-width: 1;
+}
+
+.server-icon {
+  fill: #e8ebf0;
+  stroke: #9aa3b1;
+  stroke-width: 1;
+}
+
+.server-line {
+  stroke: #6c6f78;
+  stroke-width: 1;
+  fill: none;
+}
+
+.server-group-title {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--ink);
+}
+
+.server-group-detail {
+  font-size: 14px;
+  fill: var(--muted);
+}
+
+/* ---------- Topology SVG: lines ---------- */
+.network-line {
+  stroke-width: 1.4;
+  fill: none;
+}
+
+.inband-link {
+  fill: none;
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  opacity: 0.34;
+}
+
+.inband-link-25g {
+  stroke: #16a34a;
+}
+
+.inband-link-100g {
+  stroke: #0891b2;
+}
+
+.inband-link-40g {
+  stroke: #7c3aed;
+}
+
+.inband-mlag-link,
+.inband-ha-link {
+  stroke: #d97706;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  fill: none;
+}
+
+.inband-ha-link {
+  stroke-dasharray: 5 3;
+}
+
+.detailed-topology .storage-lane-title,
+.detailed-topology .node-label,
+.detailed-topology .server-group-title {
+  paint-order: stroke;
+  stroke: rgba(251, 255, 247, 0.92);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.compute-links line {
+  stroke: #6ea8fe;
+  stroke-width: 1;
+  fill: none;
+}
+
+.ellipsis-line {
+  stroke: #6c6f78;
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+}
+
+.ellipsis-text {
+  font-size: 16px;
+  fill: #6c6f78;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+/* ---------- Topology SVG: legend ---------- */
+.legend-text {
+  font-size: 12px;
+  font-weight: 500;
+  fill: var(--ink);
+  dominant-baseline: central;
+}
+
+.legend-box {
+  fill: #ffffff;
+  stroke: #8fa0b5;
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+}
+
+.legend-title {
+  font-size: 17px;
+  font-weight: 700;
+  fill: #111827;
+}
+
+/* ---------- Topology SVG: overview ---------- */
+.overview-top-line {
+  stroke: #2b9de9;
+  stroke-width: 4;
+}
+
+.overview-title {
+  font-size: 20px;
+  font-weight: 700;
+  fill: var(--ink);
+  text-anchor: middle;
+}
+
+.overview-footnote {
+  font-size: 12px;
+  fill: var(--muted);
+}
+
+.overview-cloud {
+  fill: #537fbe;
+  stroke: #537fbe;
+}
+
+.overview-cloud-label {
+  fill: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  dominant-baseline: central;
+}
+
+.overview-hex-label {
+  fill: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  dominant-baseline: central;
+}
+
+.overview-vertical-title {
+  fill: #111827;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.overview-inline-label {
+  fill: #4b5563;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.overview-source-zone {
+  fill: rgba(255, 255, 255, 0.2);
+}
+
+.overview-server-box {
+  fill: rgba(255, 255, 255, 0.45);
+  stroke: #7b8ca3;
+  stroke-width: 1;
+  stroke-dasharray: 5 3;
+}
+
+.overview-server-title {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--ink);
+}
+
+.overview-server-caption {
+  font-size: 14px;
+  font-weight: 700;
+  fill: #111827;
+}
+
+.overview-server-count {
+  font-size: 12px;
+  font-weight: 600;
+  fill: #6b7280;
+}
+
+.overview-server-item {
+  font-size: 11px;
+  fill: var(--ink);
+}
+
+.overview-server-chassis {
+  fill: #7f7f82;
+  stroke: #6b7280;
+  stroke-width: 1;
+}
+
+.overview-server-chassis-title {
+  font-size: 10px;
+  font-weight: 600;
+  fill: var(--muted);
+}
+
+.overview-server-foot {
+  fill: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.overview-nic-lane {
+  fill: #ffffff;
+  stroke: #d1d9e4;
+  stroke-width: 0.8;
+}
+
+.overview-nic-label {
+  font-size: 10px;
+  font-weight: 600;
+  fill: var(--ink);
+}
+
+.overview-nic-count {
+  font-size: 10px;
+  font-weight: 700;
+  fill: #374151;
+}
+
+.overview-nic-port {
+  stroke: rgba(15, 23, 42, 0.12);
+  stroke-width: 0.6;
+}
+
+.overview-server-bullet {
+  fill: #2563eb;
+}
+
+.overview-server-bullet.warning {
+  fill: #d97706;
+}
+
+.overview-state-box {
+  fill: #f5f9ff;
+  stroke: #9ec5fe;
+  stroke-width: 1;
+}
+
+.overview-state-box.warning {
+  fill: #fff7ed;
+  stroke: #f0aa00;
+}
+
+.overview-state-title {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--ink);
+}
+
+.overview-state-detail {
+  font-size: 11px;
+  fill: var(--muted);
+}
+
+.overview-managed-box {
+  fill: #fff5f5;
+  stroke: #8fa0b5;
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+}
+
+.overview-managed-title {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--ink);
+}
+
+.overview-managed-detail {
+  font-size: 10px;
+  fill: var(--muted);
+}
+
+.overview-managed-item {
+  font-size: 11px;
+  fill: var(--ink);
+}
+
+.overview-managed-dot {
+  fill: #f04d4d;
+}
+
+.overview-footnote-box {
+  fill: #f8fafc;
+  stroke: #d8e0ea;
+  stroke-width: 1;
+}
+
+.overview-callout {
+  fill: #ffffff;
+  stroke: #d93025;
+  stroke-width: 1.2;
+}
+
+.overview-callout-curve {
+  stroke: #365f9b;
+  stroke-width: 1.4;
+  fill: none;
+}
+
+/* ---------- Topology SVG: title & note ---------- */
+.topology-title-large {
+  font-size: 18px;
+  font-weight: 700;
+  fill: #b94e00;
+  text-anchor: middle;
+}
+
+.topology-note {
+  font-size: 12px;
+  fill: var(--muted);
+  text-anchor: middle;
+}
+
+.topology-info {
+  font-size: 13px;
+  fill: #6b4700;
+  text-anchor: middle;
+}
+
+/* ---------- Topology SVG: fallback (data-driven) ---------- */
+.fallback-node {
+  fill: #ffffff;
+  stroke: #cbd3df;
+  stroke-width: 1;
+}
+
+.node-label {
+  font-size: 14px;
+  font-weight: 600;
+  fill: var(--ink);
+  text-anchor: middle;
+}
+
+.node-detail {
+  font-size: 12px;
+  fill: var(--muted);
+  text-anchor: middle;
+}
+
+.link-label {
+  font-size: 14px;
+  fill: var(--muted);
+}
+
+.detailed-topology {
+  display: block;
+}
+
+.reference-axis-title,
+.reference-spine-label {
+  fill: #f47b20;
+  font-size: 38px;
+  font-weight: 800;
+}
+
+.reference-plane-text,
+.reference-server-text {
+  fill: #ffffff;
+  font-size: 34px;
+  font-weight: 500;
+}
+
+.reference-leaf-text {
+  fill: #ffffff;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.reference-nic-text {
+  fill: #ffffff;
+  font-size: 21px;
+  font-weight: 600;
+}
+
+.reference-pod-title {
+  fill: #000000;
+  font-size: 42px;
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .topology-scroll {
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 1120px) {
+  .hero,
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .input-panel {
+    position: static;
+  }
+
+  .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .app-header,
+  .workspace {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .hero {
+    margin-top: 48px;
+  }
+
+  .hero-metrics,
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tabs {
+    border-radius: 24px;
+    flex-direction: column;
+  }
+
+  .section-heading {
+    display: block;
+  }
+
+  .section-heading > span {
+    display: inline-block;
+    margin-top: 12px;
+  }
+}

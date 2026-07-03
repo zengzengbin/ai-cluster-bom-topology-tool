@@ -1,0 +1,37 @@
+﻿# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+.vite/
+*.tsbuildinfo
+
+# Local development tools / config
+.codex/
+.agents/
+
+# Logs
+*.log
+.vite-dev*.log
+
+# Internal verification artifacts (not intended for public release)
+screenshots/
+development-logs/
+
+# One-off share artifacts
+*-发布版-*.zip
+
+# Archive
+_archive/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
