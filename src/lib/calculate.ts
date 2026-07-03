@@ -224,7 +224,7 @@ export function calculateOob(input: InputState, upstreamDeviceCount: number): Ne
   const aggregationWarning = access > 48 ? "带外接入交换机数量大于 48，需要关注或更换带外汇聚型号。" : "";
   const network = "带外管理网";
   const items = [
-    item(network, "1", "带外汇聚交换机", "RG-S6510-48VS8CQ(V2.0)", `${descriptions.s6510} 含100G AOC线缆*2。`, aggregation, "接入交换机不大于 48 时固定为 2；超过时提示关注汇聚型号。"),
+    item(network, "1", "带外汇聚交换机", "RG-S6510-48VS8CQ", `${descriptions.s6510} 含100G AOC线缆*2。`, aggregation, "接入交换机不大于 48 时固定为 2；超过时提示关注汇聚型号。"),
     item(network, "2", "带外接入交换机", "RG-S6000C-48GT4XS-E", descriptions.s6000, access, "带外接口总数 / 44，向上取整。"),
     item(network, "3", "带外接入到带外汇聚万兆多模模块", "XG-SFP-SR-MM850", descriptions.sfp10, access * 4, "带外接入交换机 * 4。"),
     item(network, "4", "接入上行万兆光纤", "LC2-LC2-OM3-50M(UPC)", descriptions.lc50, access * 2, "带外接入交换机 * 2。"),
