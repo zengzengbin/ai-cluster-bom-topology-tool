@@ -1,10 +1,11 @@
-﻿import { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { BomTable } from "./components/BomTable";
 import { InputPanel } from "./components/InputPanel";
 import { TopologyDiagram } from "./components/TopologyDiagram";
 import { calculateAll } from "./lib/calculate";
 import { B300_MAX, B300_MIN, normalizeB300Servers } from "./lib/inputLimits";
 import type { InputState } from "./types";
+import "./toolIntro.css";
 
 const defaultInputs: InputState = {
   b300Servers: 128,
@@ -14,6 +15,33 @@ const defaultInputs: InputState = {
   gpuStoragePortsPerServer: 2,
   allFlashStoragePortsPerServer: 2
 };
+
+const toolFeatures = [
+  {
+    icon: "清",
+    tone: "blue",
+    title: "自动生成 BOM 清单",
+    description: "根据服务器规模自动计算交换机、网卡、线缆与接口需求。"
+  },
+  {
+    icon: "拓",
+    tone: "green",
+    title: "一键输出拓扑",
+    description: "自动生成计算网、存储网、带内管理网与带外管理网拓扑。"
+  },
+  {
+    icon: "验",
+    tone: "purple",
+    title: "参数联动校验",
+    description: "输入参数后自动联动更新关键规模数据，减少人工计算错误。"
+  },
+  {
+    icon: "售",
+    tone: "orange",
+    title: "适配方案沟通",
+    description: "便于售前、方案设计与客户沟通展示，提升方案输出效率。"
+  }
+];
 
 export function App() {
   const [inputs, setInputs] = useState(defaultInputs);
@@ -100,6 +128,7 @@ export function App() {
                   </article>
                 ))}
               </div>
+              <ToolIntro />
             </section>
           )}
 
@@ -141,6 +170,36 @@ export function App() {
         </section>
       </div>
     </main>
+  );
+}
+
+function ToolIntro() {
+  return (
+    <section className="tool-intro" aria-labelledby="tool-intro-title">
+      <div className="tool-intro-header">
+        <h3 id="tool-intro-title">工具介绍</h3>
+        <p>帮助您快速完成智算网络清单与拓扑规划。</p>
+      </div>
+      <div className="tool-feature-grid">
+        {toolFeatures.map((feature) => (
+          <article className="tool-feature-card" key={feature.title}>
+            <span className={`tool-feature-icon ${feature.tone}`} aria-hidden="true">
+              {feature.icon}
+            </span>
+            <div>
+              <h4>{feature.title}</h4>
+              <p>{feature.description}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+      <div className="tool-intro-note">
+        <span aria-hidden="true">i</span>
+        <p>
+          <strong>适用场景：</strong>B300 等智算服务器集群的初步规划、清单测算与拓扑展示。
+        </p>
+      </div>
+    </section>
   );
 }
 
