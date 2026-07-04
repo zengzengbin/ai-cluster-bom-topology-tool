@@ -63,7 +63,6 @@ pnpm preview
 │   ├── App.tsx
 │   └── main.tsx
 ├── docs/                   # 项目规范文档
-├── 需求文档/                # 原始需求文档
 ├── AGENTS.md               # 项目协作说明
 └── vite.config.ts
 ```
@@ -71,7 +70,6 @@ pnpm preview
 ## 文档索引
 
 - [项目协作说明 (AGENTS.md)](AGENTS.md)
-- [需求文档](docs/requirements.md)
 - [技术规范](docs/technical-standard.md)
 - [设计规范](docs/design-standard.md)
 - [算力网络规则](docs/compute-network-rules.md)
