@@ -105,8 +105,23 @@
   line-height: 1.5;
 }
 
+.tool-intro-note-content {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.tool-intro-note p {
+  margin: 0;
+}
+
 .tool-intro-note strong {
   color: #0f4ab8;
+}
+
+.tool-intro-disclaimer {
+  padding-top: 6px;
+  border-top: 1px solid rgba(47, 120, 255, 0.16);
 }
 
 .tool-intro-note span {
