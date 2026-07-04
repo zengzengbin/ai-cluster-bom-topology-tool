@@ -198,7 +198,9 @@ function ToolIntro() {
         <div className="tool-intro-note-content">
           <p>
             <strong>适用场景：</strong>B300 智算服务器集群的初步规划、清单测算与拓扑展示。
-            <strong> 限制说明：</strong>本工具只适用于 B300 智算组网计算，且计算网只支持生成二层组网形式，即 GPU 最大规模不能超过 224 台。
+          </p>
+          <p>
+            <strong>限制说明：</strong>本工具只适用于 B300 智算组网计算，且计算网只支持生成二层组网形式，即 GPU 最大规模不能超过 224 台。
           </p>
           <p className="tool-intro-disclaimer">
             <strong>免责声明：</strong>本工具仅供参考，生成结果可能存在误差。正式对外输出前请自行复核确认；因直接采信本工具结果造成的相关损失，由使用方自行承担。
