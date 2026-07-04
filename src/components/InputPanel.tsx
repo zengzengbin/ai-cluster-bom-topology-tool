@@ -17,9 +17,9 @@ const fields: Array<{
   type?: "number" | "select";
 }> = [
   { key: "b300Servers", label: "B300 GPU 服务器", helper: "计算网、存储网、管理网均使用。", min: B300_MIN, max: B300_MAX },
-  { key: "allFlashServers", label: "全闪存储服务器", helper: "参与存储网与管理网。", min: AUXILIARY_SERVER_MIN, max: AUXILIARY_SERVER_MAX },
-  { key: "hybridStorageServers", label: "混闪存储服务器", helper: "参与带内/带外管理网。", min: AUXILIARY_SERVER_MIN, max: AUXILIARY_SERVER_MAX },
-  { key: "managementServers", label: "管理服务器", helper: "参与带内/带外管理网。", min: AUXILIARY_SERVER_MIN, max: AUXILIARY_SERVER_MAX },
+  { key: "allFlashServers", label: "全闪存储服务器", helper: "可录入 0-64，参与存储网与管理网。", min: AUXILIARY_SERVER_MIN, max: AUXILIARY_SERVER_MAX },
+  { key: "hybridStorageServers", label: "混闪存储服务器", helper: "可录入 0-64，参与带内/带外管理网。", min: AUXILIARY_SERVER_MIN, max: AUXILIARY_SERVER_MAX },
+  { key: "managementServers", label: "管理服务器", helper: "可录入 0-64，参与带内/带外管理网。", min: AUXILIARY_SERVER_MIN, max: AUXILIARY_SERVER_MAX },
   { key: "gpuStoragePortsPerServer", label: "GPU 存储网卡配置", helper: "当前支持 1*400G、2*400G、4*400G", min: 0, max: 4, type: "select" },
   { key: "allFlashStoragePortsPerServer", label: "全闪存储网卡配置", helper: "当前支持 1*400G、2*400G、4*400G", min: 0, max: 4, type: "select" }
 ];
