@@ -77,7 +77,7 @@ export function calculateCompute(input: InputState): NetworkResult {
             descriptions.s6990,
             leaf,
             virtualDualPlane
-              ? "POD 数 = B300 数量 / 32 向上取整；完整 POD 为 16 台 Leaf，最后 POD 按 CX8*2/32 向上取偶数后再向上取 2 的幂，单 POD 不超过 16。"
+              ? "Leaf 按 POD 分段汇总：满编 POD=16 台 Leaf；唯一/最后 POD 按剩余 B300 的 CX8*2/32 计算后向上取 2 的幂；单 POD≤16，单平面≤8。"
               : "POD 数 * 16；POD 数 = B300 数量 / 32 向上取整。"
           ),
           item(network, "3", "SPINE-LEAF 互联 LPO 光模块", "400G-Q112-DR4-L", descriptions.dr4, lpo, "LEAF 数量 * 32 * 2。"),
