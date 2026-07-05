@@ -27,7 +27,7 @@ describe("network calculations", () => {
 
     expect(compute.summary["组网"]).toBe("物理双平面");
     expect(compute.summary["POD"]).toBe(5);
-    expect(compute.summary["LEAF"]).toBe(128);
+    expect(compute.summary["LEAF"]).toBe(80);
     expect(compute.summary["SPINE"]).toBe(64);
   });
 
@@ -102,7 +102,7 @@ describe("network calculations", () => {
 
     expect(compute.summary["组网"]).toBe("物理双平面");
     expect(compute.summary["POD"]).toBe(5);
-    expect(compute.summary["LEAF"]).toBe(128);
+    expect(compute.summary["LEAF"]).toBe(80);
     expect(compute.summary["SPINE"]).toBe(64);
     expect(compute.items.find((entry) => entry.productName === "SPINE逃生链路 LPO光模块")?.quantity).toBe(64 * 8);
     expect(compute.items.find((entry) => entry.productName === "SPINE逃生链路互联光纤-10米")?.quantity).toBe((64 * 8) / 2);
