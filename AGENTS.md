@@ -4,6 +4,7 @@
 
 ## 标准文件路径
 
+- 开发需求：`docs/requirements.md`
 - 技术规范：`docs/technical-standard.md`
 - 设计规范：`docs/design-standard.md`
 - 算力网络规则：`docs/compute-network-rules.md`
@@ -23,11 +24,20 @@
 8. 直接修改实现文件后，必须说明修改范围、自测方式、自测结果和遗留风险。
 9. 验收不通过时，必须明确整改项、影响范围、验证方式，并继续推进到可验证结果。
 
+## 计算网规则协作要求
+
+1. 涉及 B300/POD/Leaf/Spine 规则时，先确认适用范围，例如 1-4、5-128、129-224 或超出 224，不得把某一段规则误扩展到其他范围。
+2. `src/lib/calculate.ts` 是计算网清单数量的源头；拓扑必须与清单同源，不允许独立产生矛盾数量。
+3. B300=5-128 时，Leaf 按 POD 分段汇总；满编 POD=16 台 Leaf；唯一/最后 POD 按剩余 B300 的 `CX8*2/32` 计算后向上取 2 的幂；单 POD≤16，单平面≤8。
+4. B300=129-224 时，Leaf 仍按 `POD 数 * 16`，不要套用 5-128 的最后 POD 取幂规则。
+5. 修改计算网规则必须同步检查 `docs/compute-network-rules.md`、`docs/technical-standard.md`、`docs/design-standard.md`、`docs/requirements.md`、`docs/acceptance-standard.md`。
+6. 用户点名的反例必须加入测试或验收用例；例如 B300=51 时，拓扑不得出现单 POD 20 台 Leaf。
+
 ## 文件维护责任
 
 - 协作与流程文件：`AGENTS.md`、`docs/execution-process.md`、`docs/acceptance-standard.md`、`development-logs/`。
 - 技术实现文件：`docs/technical-standard.md`、`docs/compute-network-rules.md` 及开发日志中的自测记录。
-- 设计规范文件：`docs/design-standard.md` 及开发日志中的设计记录。
+- 需求与设计文件：`docs/requirements.md`、`docs/design-standard.md` 及开发日志中的设计记录。
 
 ## 项目协作边界
 
