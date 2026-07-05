@@ -66,6 +66,17 @@ function roundUpToEvenLocal(value: number): number {
   return rounded % 2 === 0 ? rounded : rounded + 1;
 }
 
+function roundUpPowerOfTwoLocal(value: number): number {
+  if (value <= 1) {
+    return 1;
+  }
+  let power = 1;
+  while (power < value) {
+    power *= 2;
+  }
+  return power;
+}
+
 function baseLeafCountForPod(actualServers: number, virtualDualPlane: boolean): number {
   if (actualServers <= 0) {
     return 0;
@@ -73,25 +84,11 @@ function baseLeafCountForPod(actualServers: number, virtualDualPlane: boolean): 
   if (!virtualDualPlane) {
     return 16;
   }
-  return roundUpToEvenLocal(actualServers / 2);
+  return Math.min(16, roundUpPowerOfTwoLocal(roundUpToEvenLocal(actualServers / 2)));
 }
 
-function leafCountsForPods(totalLeaf: number, podActuals: number[], virtualDualPlane: boolean): number[] {
-  const counts = podActuals.map((actualServers) => baseLeafCountForPod(actualServers, virtualDualPlane));
-  const activeIndexes = counts.map((count, index) => (count > 0 ? index : -1)).filter((index) => index >= 0);
-  if (activeIndexes.length === 0) {
-    return counts;
-  }
-
-  let remaining = Math.max(0, totalLeaf - counts.reduce((sum, count) => sum + count, 0));
-  let cursor = 0;
-  while (remaining > 0) {
-    const increment = remaining >= 2 ? 2 : 1;
-    counts[activeIndexes[cursor % activeIndexes.length]] += increment;
-    remaining -= increment;
-    cursor += 1;
-  }
-  return counts;
+function leafCountsForPods(_totalLeaf: number, podActuals: number[], virtualDualPlane: boolean): number[] {
+  return podActuals.map((actualServers) => baseLeafCountForPod(actualServers, virtualDualPlane));
 }
 
 function representativeLeafLabels(leavesPerPlane: number): number[] {
