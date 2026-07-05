@@ -63,6 +63,7 @@ pnpm preview
 │   ├── App.tsx
 │   └── main.tsx
 ├── docs/                   # 项目规范文档
+├── development-logs/       # 按天维护的开发日志
 ├── AGENTS.md               # 项目协作说明
 └── vite.config.ts
 ```
@@ -70,11 +71,17 @@ pnpm preview
 ## 文档索引
 
 - [项目协作说明 (AGENTS.md)](AGENTS.md)
+- [开发需求](docs/requirements.md)
 - [技术规范](docs/technical-standard.md)
 - [设计规范](docs/design-standard.md)
 - [算力网络规则](docs/compute-network-rules.md)
 - [执行流程](docs/execution-process.md)
 - [验收标准](docs/acceptance-standard.md)
+- [开发日志目录](development-logs/)
+
+## 开发日志规则
+
+开发日志统一放在仓库根目录 `development-logs/` 下，与 `docs/` 同级。日志按天命名，例如 `2026-07-05.md`；同一天继续开发时刷新当天文件，不重复新建同日多份日志。
 
 ## 部署
 
