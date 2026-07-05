@@ -61,7 +61,28 @@ describe("network calculations", () => {
     expect(compute.items.map((entry) => entry.productName)).toContain("SPINE-LEAF 互联 LPO 光模块");
   });
 
-  it("rounds virtual dual-plane compute leaf count to a power of two for 28 B300 servers", () => {
+  it("rounds the last virtual pod leaf count to a power of two without exceeding 16", () => {
+    const cases = [
+      { b300Servers: 33, pods: 2, leaf: 18, spine: 16 },
+      { b300Servers: 51, pods: 2, leaf: 32, spine: 16 },
+      { b300Servers: 65, pods: 3, leaf: 34, spine: 32 },
+      { b300Servers: 81, pods: 3, leaf: 48, spine: 32 },
+      { b300Servers: 97, pods: 4, leaf: 50, spine: 32 }
+    ];
+
+    for (const testCase of cases) {
+      const result = calculateAll({ ...base, b300Servers: testCase.b300Servers });
+      const compute = result.networks.find((network) => network.key === "compute")!;
+
+      expect(compute.summary["组网"]).toBe("虚拟双平面");
+      expect(compute.summary["POD"]).toBe(testCase.pods);
+      expect(compute.summary["LEAF"]).toBe(testCase.leaf);
+      expect(compute.summary["SPINE"]).toBe(testCase.spine);
+      expect(compute.items.find((entry) => entry.productName === "计算网 LEAF 交换机")?.formula).toContain("单 POD 不超过 16");
+    }
+  });
+
+  it("keeps virtual dual-plane compute network for 28 B300 servers", () => {
     const result = calculateAll({ ...base, b300Servers: 28 });
     const compute = result.networks.find((network) => network.key === "compute")!;
 
@@ -71,7 +92,6 @@ describe("network calculations", () => {
     expect(compute.summary["SPINE"]).toBe(8);
     expect(compute.items.map((entry) => entry.productName)).toContain("计算网 LEAF 交换机");
     expect(compute.items.map((entry) => entry.productName)).toContain("SPINE-LEAF 互联 LPO 光模块");
-    expect(compute.items.find((entry) => entry.productName === "计算网 LEAF 交换机")?.formula).toContain("2 的幂次方");
   });
 
   it("keeps virtual dual-plane compute network for 32 B300 servers", () => {
