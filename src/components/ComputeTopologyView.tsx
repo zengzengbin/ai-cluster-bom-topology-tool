@@ -66,7 +66,7 @@ function roundUpToEvenLocal(value: number): number {
   return rounded % 2 === 0 ? rounded : rounded + 1;
 }
 
-function leafCountForPod(actualServers: number, virtualDualPlane: boolean): number {
+function baseLeafCountForPod(actualServers: number, virtualDualPlane: boolean): number {
   if (actualServers <= 0) {
     return 0;
   }
@@ -74,6 +74,24 @@ function leafCountForPod(actualServers: number, virtualDualPlane: boolean): numb
     return 16;
   }
   return roundUpToEvenLocal(actualServers / 2);
+}
+
+function leafCountsForPods(totalLeaf: number, podActuals: number[], virtualDualPlane: boolean): number[] {
+  const counts = podActuals.map((actualServers) => baseLeafCountForPod(actualServers, virtualDualPlane));
+  const activeIndexes = counts.map((count, index) => (count > 0 ? index : -1)).filter((index) => index >= 0);
+  if (activeIndexes.length === 0) {
+    return counts;
+  }
+
+  let remaining = Math.max(0, totalLeaf - counts.reduce((sum, count) => sum + count, 0));
+  let cursor = 0;
+  while (remaining > 0) {
+    const increment = remaining >= 2 ? 2 : 1;
+    counts[activeIndexes[cursor % activeIndexes.length]] += increment;
+    remaining -= increment;
+    cursor += 1;
+  }
+  return counts;
 }
 
 function representativeLeafLabels(leavesPerPlane: number): number[] {
@@ -204,10 +222,15 @@ export function ComputeTopologyView({ topology }: Props) {
   const leafY = 312;
   const podY = 404;
   const spineLabels = pods <= 2 ? compactSpineLabels(spine) : visibleSpineLabels(spine);
-  const realSpineLabels = spineLabels.filter((entry): entry is number => entry !== "gap");
   const spineSlotWidths = spineLabels.map((entry) => (entry === "gap" ? 60 : 116));
   const spineCenters = centeredSlots(spineSlotWidths, canvasW / 2);
   const spineEntries = spineLabels.map((label, index) => ({ label, x: spineCenters[index] }));
+  const podActuals = Array.from({ length: pods }, (_, index) => {
+    const start = index * 32 + 1;
+    const end = Math.min(b300, (index + 1) * 32);
+    return Math.max(0, end - start + 1);
+  });
+  const podLeafCounts = leafCountsForPods(leaf, podActuals, virtualDualPlane);
 
   const podLayouts: PodLayout[] = [];
   let cursor = left;
@@ -219,7 +242,7 @@ export function ComputeTopologyView({ topology }: Props) {
     const start = item * 32 + 1;
     const end = Math.min(b300, (item + 1) * 32);
     const actual = Math.max(0, end - start + 1);
-    const leafCount = leafCountForPod(actual, virtualDualPlane);
+    const leafCount = podLeafCounts[item] ?? baseLeafCountForPod(actual, virtualDualPlane);
     podLayouts.push({
       podIndex: item,
       x: cursor,
@@ -282,7 +305,7 @@ export function ComputeTopologyView({ topology }: Props) {
           接入层 Leaf
         </text>
         <text x={canvasW - 44} y="254" textAnchor="end" className="zone-sub">
-          共 {leaf} 台 Leaf；各 POD 按实际服务器数分别计算
+          共 {leaf} 台 Leaf；按清单数量分配到各 POD
         </text>
 
         {podLayouts.map((pod) => {
@@ -386,9 +409,7 @@ export function ComputeTopologyView({ topology }: Props) {
                 服务器 {pod.start}~{pod.end}；每台 8 张 CX8
               </text>
               <text x={pod.x + 16} y={podY + 154} className="device-sublabel">
-                {virtualDualPlane
-                  ? `本 POD Leaf ${pod.leafCount} 台；P1/P2 各 ${pod.leavesPerPlane} 台`
-                  : `物理双平面固定配置：本 POD Leaf ${pod.leafCount} 台；P1/P2 各 ${pod.leavesPerPlane} 台`}
+                {`本 POD Leaf ${pod.leafCount} 台；P1/P2 各 ${pod.leavesPerPlane} 台`}
               </text>
             </g>
           );
@@ -481,6 +502,12 @@ function PhysicalDualPlaneTopology({ topology }: { topology: Topology }) {
   const slotWidths = labels.map((entry) => (entry === "gap" ? 54 : 82));
   const p1Spines = labels.map((label, index) => ({ label, x: centeredSlots(slotWidths, plane1X + planeW / 2)[index] }));
   const p2Spines = labels.map((label, index) => ({ label, x: centeredSlots(slotWidths, plane2X + planeW / 2)[index] }));
+  const podActuals = Array.from({ length: pods }, (_, index) => {
+    const start = index * 32 + 1;
+    const end = Math.min(b300, (index + 1) * 32);
+    return Math.max(0, end - start + 1);
+  });
+  const podLeafCounts = leafCountsForPods(leaf, podActuals, false);
   const podLayouts: PodLayout[] = [];
   let cursor = left;
 
@@ -492,7 +519,7 @@ function PhysicalDualPlaneTopology({ topology }: { topology: Topology }) {
     const start = item * 32 + 1;
     const end = Math.min(b300, (item + 1) * 32);
     const actual = Math.max(0, end - start + 1);
-    const leafCount = leafCountForPod(actual, false);
+    const leafCount = podLeafCounts[item] ?? baseLeafCountForPod(actual, false);
     podLayouts.push({
       podIndex: item,
       x: cursor,
@@ -558,7 +585,7 @@ function PhysicalDualPlaneTopology({ topology }: { topology: Topology }) {
         <rect x="24" y="270" width={canvasW - 48} height="126" rx="12" className="zone zone-compute" />
         <text x="44" y="302" className="zone-heading">接入层 Leaf</text>
         <text x={canvasW - 44} y="302" textAnchor="end" className="zone-sub">
-          共 {leaf} 台 Leaf；P1 Leaf 上联 P1 Spine，P2 Leaf 上联 P2 Spine
+          共 {leaf} 台 Leaf；按清单数量分配到各 POD
         </text>
         {podLayouts.map((pod) =>
           buildLeafPairs(pod).map((pair) => (
