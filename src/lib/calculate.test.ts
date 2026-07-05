@@ -78,7 +78,7 @@ describe("network calculations", () => {
       expect(compute.summary["POD"]).toBe(testCase.pods);
       expect(compute.summary["LEAF"]).toBe(testCase.leaf);
       expect(compute.summary["SPINE"]).toBe(testCase.spine);
-      expect(compute.items.find((entry) => entry.productName === "计算网 LEAF 交换机")?.formula).toContain("单 POD 不超过 16");
+      expect(compute.items.find((entry) => entry.productName === "计算网 LEAF 交换机")?.formula).toContain("单 POD≤16");
     }
   });
 
