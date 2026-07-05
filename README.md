@@ -64,6 +64,7 @@ pnpm preview
 │   └── main.tsx
 ├── docs/                   # 项目规范文档
 ├── development-logs/       # 按天维护的开发日志
+├── scripts/                # 本地辅助脚本
 ├── AGENTS.md               # 项目协作说明
 └── vite.config.ts
 ```
@@ -83,7 +84,7 @@ pnpm preview
 
 开发日志统一放在仓库根目录 `development-logs/` 下，与 `docs/` 同级。日志按天命名，例如 `2026-07-05.md`；同一天继续开发时刷新当天文件，不重复新建同日多份日志。
 
-## 部署
+## 部署与分享
 
 构建产物在 `dist/` 目录，可部署到任何静态网站托管：
 
@@ -93,7 +94,29 @@ pnpm preview
 - Cloudflare Pages
 - 任意支持静态文件托管的 Web 服务器
 
-也可以直接将 `dist/` 目录打包成 zip 分发给最终用户，本地双击 `index.html` 即可使用（已配置 `base: "./"`，`file://` 协议下也能正常打开）。
+### 在线分享
+
+优先推荐直接分享 GitHub Pages 在线地址，使用者无需安装任何环境。
+
+### 离线分享
+
+不建议让使用者直接双击 `dist/index.html`。部分浏览器会限制 `file://` 下的 JavaScript 模块加载，导致页面空白。
+
+离线分发建议：
+
+1. 在项目根目录执行 `pnpm build`，生成 `dist/`。
+2. 将 `scripts/start-local.bat` 复制到 `dist/` 目录内。
+3. 将整个 `dist/` 目录压缩成 zip 发给使用者。
+4. 使用者解压后进入 `dist/`，双击 `start-local.bat`。
+5. 脚本默认使用 `http://127.0.0.1:8765/` 打开工具。
+
+如 8765 端口被占用，可在命令行中进入 `dist/` 后执行：
+
+```bat
+start-local.bat 8766
+```
+
+离线脚本依赖使用者电脑已安装 Python 3；如没有 Python，建议改用在线地址访问。
 
 ## 许可
 
