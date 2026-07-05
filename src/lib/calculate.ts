@@ -4,6 +4,8 @@ import { descriptions } from "./products";
 import { makeTopology, overviewTopology } from "./topology";
 
 const COMPUTE_MAX_B300 = 224;
+const COMPUTE_POD_SIZE = 32;
+const COMPUTE_MAX_LEAF_PER_POD = 16;
 
 function item(
   network: string,
@@ -17,14 +19,33 @@ function item(
   return { network, sequence, productName, model, description, quantity, formula };
 }
 
+function computePodActuals(b300Servers: number, pods: number): number[] {
+  return Array.from({ length: pods }, (_, index) => {
+    const start = index * COMPUTE_POD_SIZE + 1;
+    const end = Math.min(b300Servers, (index + 1) * COMPUTE_POD_SIZE);
+    return Math.max(0, end - start + 1);
+  });
+}
+
+function virtualDualPlaneLeafForPod(actualServers: number): number {
+  if (actualServers <= 0) {
+    return 0;
+  }
+  const baseLeaf = roundUpToEven((actualServers * 8 * 2) / 32);
+  return Math.min(COMPUTE_MAX_LEAF_PER_POD, roundUpPowerOfTwo(baseLeaf));
+}
+
+function virtualDualPlaneLeafCount(b300Servers: number, pods: number): number {
+  return computePodActuals(b300Servers, pods).reduce((sum, actualServers) => sum + virtualDualPlaneLeafForPod(actualServers), 0);
+}
+
 export function calculateCompute(input: InputState): NetworkResult {
   const cx8Count = input.b300Servers * 8;
   const supported = input.b300Servers <= COMPUTE_MAX_B300;
   const directSpine = supported && input.b300Servers <= 4;
   const virtualDualPlane = supported && !directSpine && input.b300Servers <= 128;
-  const pods = directSpine ? 1 : ceilDivide(input.b300Servers, 32);
-  const baseLeaf = directSpine ? 0 : virtualDualPlane ? roundUpToEven((cx8Count * 2) / 32) : pods * 16;
-  const leaf = directSpine ? 0 : virtualDualPlane ? roundUpPowerOfTwo(baseLeaf) : baseLeaf;
+  const pods = directSpine ? 1 : ceilDivide(input.b300Servers, COMPUTE_POD_SIZE);
+  const leaf = directSpine ? 0 : virtualDualPlane ? virtualDualPlaneLeafCount(input.b300Servers, pods) : pods * COMPUTE_MAX_LEAF_PER_POD;
   const spine = directSpine ? 2 : roundUpPowerOfTwo(leaf / 2);
   const lpo = leaf * 32 * 2;
   const leafDown = cx8Count * 2;
@@ -56,7 +77,7 @@ export function calculateCompute(input: InputState): NetworkResult {
             descriptions.s6990,
             leaf,
             virtualDualPlane
-              ? "CX8 网卡总数 * 2 / 32，除不尽时向上取整数偶数，再向上取 2 的幂次方。"
+              ? "POD 数 = B300 数量 / 32 向上取整；完整 POD 为 16 台 Leaf，最后 POD 按 CX8*2/32 向上取偶数后再向上取 2 的幂，单 POD 不超过 16。"
               : "POD 数 * 16；POD 数 = B300 数量 / 32 向上取整。"
           ),
           item(network, "3", "SPINE-LEAF 互联 LPO 光模块", "400G-Q112-DR4-L", descriptions.dr4, lpo, "LEAF 数量 * 32 * 2。"),
