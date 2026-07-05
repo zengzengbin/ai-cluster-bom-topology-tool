@@ -502,12 +502,12 @@ function PhysicalDualPlaneTopology({ topology }: { topology: Topology }) {
   const slotWidths = labels.map((entry) => (entry === "gap" ? 54 : 82));
   const p1Spines = labels.map((label, index) => ({ label, x: centeredSlots(slotWidths, plane1X + planeW / 2)[index] }));
   const p2Spines = labels.map((label, index) => ({ label, x: centeredSlots(slotWidths, plane2X + planeW / 2)[index] }));
-  const podActuals = Array.from({ length: pods }, (_, index) => {
+  const podLeafCounts = Array.from({ length: pods }, (_, index) => {
     const start = index * 32 + 1;
     const end = Math.min(b300, (index + 1) * 32);
-    return Math.max(0, end - start + 1);
+    const actual = Math.max(0, end - start + 1);
+    return baseLeafCountForPod(actual, false);
   });
-  const podLeafCounts = leafCountsForPods(leaf, podActuals, false);
   const podLayouts: PodLayout[] = [];
   let cursor = left;
 
@@ -585,7 +585,7 @@ function PhysicalDualPlaneTopology({ topology }: { topology: Topology }) {
         <rect x="24" y="270" width={canvasW - 48} height="126" rx="12" className="zone zone-compute" />
         <text x="44" y="302" className="zone-heading">接入层 Leaf</text>
         <text x={canvasW - 44} y="302" textAnchor="end" className="zone-sub">
-          共 {leaf} 台 Leaf；按清单数量分配到各 POD
+          共 {leaf} 台 Leaf；P1 Leaf 上联 P1 Spine，P2 Leaf 上联 P2 Spine
         </text>
         {podLayouts.map((pod) =>
           buildLeafPairs(pod).map((pair) => (
