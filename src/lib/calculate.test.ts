@@ -1,4 +1,4 @@
-﻿import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { calculateAll } from "./calculate";
 import type { InputState } from "../types";
 
@@ -27,7 +27,7 @@ describe("network calculations", () => {
 
     expect(compute.summary["组网"]).toBe("物理双平面");
     expect(compute.summary["POD"]).toBe(5);
-    expect(compute.summary["LEAF"]).toBe(80);
+    expect(compute.summary["LEAF"]).toBe(128);
     expect(compute.summary["SPINE"]).toBe(64);
   });
 
@@ -61,16 +61,17 @@ describe("network calculations", () => {
     expect(compute.items.map((entry) => entry.productName)).toContain("SPINE-LEAF 互联 LPO 光模块");
   });
 
-  it("keeps virtual dual-plane compute network for 28 B300 servers", () => {
+  it("rounds virtual dual-plane compute leaf count to a power of two for 28 B300 servers", () => {
     const result = calculateAll({ ...base, b300Servers: 28 });
     const compute = result.networks.find((network) => network.key === "compute")!;
 
     expect(compute.summary["组网"]).toBe("虚拟双平面");
     expect(compute.summary["POD"]).toBe(1);
-    expect(compute.summary["LEAF"]).toBe(14);
+    expect(compute.summary["LEAF"]).toBe(16);
     expect(compute.summary["SPINE"]).toBe(8);
     expect(compute.items.map((entry) => entry.productName)).toContain("计算网 LEAF 交换机");
     expect(compute.items.map((entry) => entry.productName)).toContain("SPINE-LEAF 互联 LPO 光模块");
+    expect(compute.items.find((entry) => entry.productName === "计算网 LEAF 交换机")?.formula).toContain("2 的幂次方");
   });
 
   it("keeps virtual dual-plane compute network for 32 B300 servers", () => {
@@ -101,7 +102,7 @@ describe("network calculations", () => {
 
     expect(compute.summary["组网"]).toBe("物理双平面");
     expect(compute.summary["POD"]).toBe(5);
-    expect(compute.summary["LEAF"]).toBe(80);
+    expect(compute.summary["LEAF"]).toBe(128);
     expect(compute.summary["SPINE"]).toBe(64);
     expect(compute.items.find((entry) => entry.productName === "SPINE逃生链路 LPO光模块")?.quantity).toBe(64 * 8);
     expect(compute.items.find((entry) => entry.productName === "SPINE逃生链路互联光纤-10米")?.quantity).toBe((64 * 8) / 2);
