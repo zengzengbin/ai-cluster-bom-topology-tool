@@ -675,7 +675,7 @@ function DirectSpineTopology({ b300, cx8 }: { b300: number; cx8: number }) {
           );
         })}
         <text x={canvasW / 2} y={spineY + 78} textAnchor="middle" className="device-sublabel">
-          Spine 横联为代表画法；清单按 {spineInterconnect} 个互联光模块计算
+          Spine 横联：{b300 * 8}*400G
         </text>
 
         <rect x="256" y={podY - 30} width="470" height="170" rx="10" className="pod-frame" />
