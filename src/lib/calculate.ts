@@ -23,7 +23,8 @@ export function calculateCompute(input: InputState): NetworkResult {
   const directSpine = supported && input.b300Servers <= 4;
   const virtualDualPlane = supported && !directSpine && input.b300Servers <= 128;
   const pods = directSpine ? 1 : ceilDivide(input.b300Servers, 32);
-  const leaf = directSpine ? 0 : virtualDualPlane ? roundUpToEven((cx8Count * 2) / 32) : pods * 16;
+  const baseLeaf = directSpine ? 0 : virtualDualPlane ? roundUpToEven((cx8Count * 2) / 32) : pods * 16;
+  const leaf = directSpine ? 0 : roundUpPowerOfTwo(baseLeaf);
   const spine = directSpine ? 2 : roundUpPowerOfTwo(leaf / 2);
   const lpo = leaf * 32 * 2;
   const leafDown = cx8Count * 2;
@@ -47,7 +48,17 @@ export function calculateCompute(input: InputState): NetworkResult {
         ]
       : [
           item(network, "1", "计算网 SPINE 交换机", "RG-S6990-64QC2XS", descriptions.s6990, spine, "LEAF 数量 / 2，向上取 2 的幂。"),
-          item(network, "2", "计算网 LEAF 交换机", "RG-S6990-64QC2XS", descriptions.s6990, leaf, virtualDualPlane ? "CX8 网卡总数 * 2 / 32，除不尽时向上取整数偶数。" : "POD 数 * 16；POD 数 = B300 数量 / 32 向上取整。"),
+          item(
+            network,
+            "2",
+            "计算网 LEAF 交换机",
+            "RG-S6990-64QC2XS",
+            descriptions.s6990,
+            leaf,
+            virtualDualPlane
+              ? "CX8 网卡总数 * 2 / 32，除不尽时向上取整数偶数，再向上取 2 的幂次方。"
+              : "POD 数 * 16；POD 数 = B300 数量 / 32 向上取整，再向上取 2 的幂次方。"
+          ),
           item(network, "3", "SPINE-LEAF 互联 LPO 光模块", "400G-Q112-DR4-L", descriptions.dr4, lpo, "LEAF 数量 * 32 * 2。"),
           item(network, "4", "SPINE-LEAF 互联光纤-50 米", "MPO-MPO-SM-50M(APC)", descriptions.sm50, smFiber, "SPINE-LEAF 互联 LPO 光模块 / 4。"),
           item(network, "5", "SPINE-LEAF 互联光纤-100 米", "MPO-MPO-SM-100M(APC)", descriptions.sm100, smFiber, "SPINE-LEAF 互联 LPO 光模块 / 4。"),
